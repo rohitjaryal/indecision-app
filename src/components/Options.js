@@ -5,6 +5,7 @@ const Options = (props) => {
     return (
       <div>
         <button onClick={props.handleDeleteOptions}>Remove All</button>
+        {console.log("options debug:",props.options)}
         {
           props.options.map((option) => (
             <Option 
@@ -12,7 +13,8 @@ const Options = (props) => {
           optionText={option} 
           handleSingleDelete={props.handleSingleDelete}
           />))
-        }
+          }
+        
       </div>
     );
   };

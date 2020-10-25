@@ -5,21 +5,34 @@ import Action from './Action';
 import Header from './Header';
 
 export default class IndecisionApp extends React.Component {
-    constructor(props) {
-      super(props);
-      this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
-      this.handlePick = this.handlePick.bind(this);
-      this.handleAddOption = this.handleAddOption.bind(this);
-      this.handleSingleDelete=this.handleSingleDelete.bind(this);
-      this.state = {
-        options: props.options
-      };
-    }
-    handleDeleteOptions() {
+  state = {
+    options: [localStorage.getItem('options')]
+  };
+  
+    handleDeleteOptions=()=> {
       this.setState(()=>({options: []}));
     }
+
+    componentDidMount(){
+      // console.log('mounted');
+      if(localStorage.getItem('options').length>0){
+        this.setState((prevState)=>({
+          options: [localStorage.getItem('options')]
+        }));
+      }
+      // console.log(this.state.options);
+    }
+
+    componentDidUpdate(prevProps,prevState){
+
+      
+      localStorage.setItem('options',this.state.options);
+      // console.log('local storage set:',localStorage.getItem('options'))
+    }
+    
   
-    handleSingleDelete(optionToRemove){
+  
+    handleSingleDelete=(optionToRemove)=>{
   
       this.setState((prevState)=>({
         options: prevState.options.filter((option)=>{
@@ -31,19 +44,17 @@ export default class IndecisionApp extends React.Component {
     }
   
   
-    handlePick() {
+    handlePick=()=> {
       const randomNum = Math.floor(Math.random() * this.state.options.length);
       const option = this.state.options[randomNum];
       alert(option);
     }
-    handleAddOption(option) {
+    handleAddOption=(option)=> {
       if (!option) {
         return 'Enter valid value to add item';
       } else if (this.state.options.indexOf(option) > -1) {
         return 'This option already exists';
       }
-  
-  
       this.setState((prevState)=>({options: prevState.options.concat(option)}));
     }
     render() {
@@ -68,7 +79,3 @@ export default class IndecisionApp extends React.Component {
       );
     }
   }
-  
-  IndecisionApp.defaultProps = {
-    options: []
-  };
